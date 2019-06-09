@@ -11,35 +11,51 @@ player1Start = false;
 player2Start = false;
 
 $("#player1-start").on("click", function(){
+    var curPlayer2Start; 
     player1Start = true;
+    database.ref().set({
+        player1StartFB: player1Start,
+    });
+    database.ref().on("value", function(snapshot) {
+        curPlayer2Start = snapshot.val().player2StartFB;
+    });
+    console.log(curPlayer2Start);
     $(this).hide();
+    $("#select-player-head").text("You are Player 1");
     $("#player1-buttons").show();
     $("#player1-scoreboard").show();
-    if (player2Start === false) {
+    if (curPlayer2Start === false) {
         $("#directions-text").text("Waiting for Player 2 to join");
     } else {
-        $("#select-player").hide();
         $("#directions-text").text("Select rock, paper, or scissors.")
     };
 });
 
 
 $("#player2-start").on("click", function(){
+    var curPlayer1Start;
     player2Start = true;
+    database.ref().set({
+        player2StartFB: player2Start,
+    });
+    database.ref().on("value", function(snapshot) {
+        curPlayer1Start = snapshot.val().player1StartFB;
+    });
+    console.log(curPlayer1Start);
     $(this).hide();
+    $("#select-player-head").text("You are Player 2");
     $("#player2-buttons").show();
     $("#player2-scoreboard").show();
-    if (player1Start === false) {
-        $("#directions-text").text("Waiting for Player 2 to join");
+    if (curPlayer1Start === false) {
+        $("#directions-text").text("Waiting for Player 1 to join");
     } else {
-        $("#select-player").hide();
         $("#directions-text").text("Select rock, paper, or scissors.")
     };
 });
 
 
 // RPS game logic
-
+// creating global game variables
 var player1Wins = 0;
 var player1Losses = 0;
 var player1Ties = 0;
@@ -138,3 +154,12 @@ function scoreRound() {
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
+  var database = firebase.database();
+
+// saving game variables into firebase
+  database.ref().set({
+      // whether player has been selected
+      player1StartFB: player1Start,
+      player2StartFB: player2Start,
+  });
+

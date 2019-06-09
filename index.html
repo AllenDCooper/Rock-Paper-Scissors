@@ -5,67 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Rock, Paper, Scissors</title>
-
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-database.js"></script>
 </head>
 <body>
     <h1>Play Rock, Paper, Scissors</h1>
     <p id="directions-text">Enter p for paper, r for rock, and s for scissors.</p>
-    <p id="userchoice-text"></p>
-    <p id="computerchoice-text"></p>
+    <p id="user1choice-text"></p>
+    <p id="user2choice-text"></p>
     <p id="wins-text"></p>
     <p id="losses-text"></p>
     <p id="ties-text"></p>
-    <script type="text/javascript">
-
-    var computerChoices = ["r", "p", "s"];
-
-    var wins = 0;
-    var losses = 0;
-    var ties = 0;
-
-    var directionsText = document.getElementById("directions-text");
-    var userChoiceText = document.getElementById("userchoice-text");
-    var computerChoiceText = document.getElementById("computerchoice-text");
-    var winsText = document.getElementById("wins-text");
-    var lossesText = document.getElementById("losses-text");
-    var tiesText = document.getElementById("ties-text");
-
-    document.onkeyup = function(event) {
-        var userGuess = event.key;
-        var computerGuess = computerChoices[Math.floor(Math.random()*computerChoices.length)]
-
-    
-        if ((userGuess === "r") || (userGuess === "p") || (userGuess === "s")) {
-            if ((userGuess === "r") && (computerGuess === "s")) {
-                wins++
-            }
-            else if ((userGuess == "r") && (computerGuess === "p")) {
-                losses++
-            }
-            else if ((userGuess === "p") && (computerGuess === "r")) {
-                wins++
-            }
-            else if ((userGuess === "p") && (computerGuess === "s")) {
-                losses++
-            }
-            else if ((userGuess === "s") && (computerGuess === "p")) {
-                wins++
-            }
-            else if ((userGuess === "s") && (computerGuess === "r")) {
-                losses++
-            }
-            else if (userGuess === computerGuess) {
-                ties++
-            }
-        };
-    
-        directionsText.textContent = " ";
-        userChoiceText.textContent = "You chose " + userGuess + ".";
-        computerChoiceText.textContent = "The computer chose " + computerGuess + ".";
-        winsText.textContent = "Wins: " + wins;
-        lossesText.textContent = "Losses: " + losses;
-        tiesText.textContent = "Ties: " + ties;
-    }
-    </script>
+     <!-- jQuery library-->
+     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+     <!-- JavaScript code -->
+    <script type="text/javascript" src="assets/javascript/logic.js"></script>
 </body>
 </html>

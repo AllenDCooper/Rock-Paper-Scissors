@@ -11,12 +11,37 @@
 </head>
 <body>
     <h1>Play Rock, Paper, Scissors</h1>
-    <p id="directions-text">Enter p for paper, r for rock, and s for scissors.</p>
-    <p id="user1choice-text"></p>
-    <p id="user2choice-text"></p>
-    <p id="wins-text"></p>
-    <p id="losses-text"></p>
-    <p id="ties-text"></p>
+    <div id="select-player">
+        <h2>Select available player</h2>
+        <button id="player1-start">Player 1</button>
+        <button id="player2-start">Player 2</button>
+    </div>
+    <p id="directions-text"></p>
+    <div id="player1-buttons">
+        <button class="player1-btn" data-value="rock">rock</button>
+        <button class="player1-btn" data-value="paper">paper</button>
+        <button class="player1-btn" data-value="scissors">scissors</button>
+    </div>
+    <div id="player2-buttons">
+            <button class="player2-btn" data-value="rock">rock</button>
+            <button class="player2-btn" data-value="paper">paper</button>
+            <button class="player2-btn" data-value="scissors">scissors</button>
+        </div>
+    <div id="player1-scoreboard">
+        <p id="1-player1-choice">You play:</p>
+        <p id="1-player2-choice">Player 2 plays:</p>
+        <p id="1-player1-wins">Wins:</p>
+        <p id="1-player1-losses">Losses:</p>
+        <p id="1-player1-ties">Ties:</p>
+    </div>
+    <div id="player2-scoreboard">
+        <p id="2-player2-choice">You play:</p>
+        <p id="2-player1-choice">Player 1 plays:</p>
+        <p id="2-player2-wins">Wins:</p>
+        <p id="2-player2-losses">Losses:</p>
+        <p id="2-player2-ties">Ties:</p>
+    </div>
+
      <!-- jQuery library-->
      <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
      <!-- JavaScript code -->

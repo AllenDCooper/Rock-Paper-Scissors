@@ -12,37 +12,37 @@ var computerChoices = ["r", "p", "s"];
     var tiesText = document.getElementById("ties-text");
 
     document.onkeyup = function(event) {
-        var userGuess = event.key;
-        var computerGuess = computerChoices[Math.floor(Math.random()*computerChoices.length)]
+        var user1Guess = event.key;
+        var user2Guess = computerChoices[Math.floor(Math.random()*computerChoices.length)]
 
     
-        if ((userGuess === "r") || (userGuess === "p") || (userGuess === "s")) {
-            if ((userGuess === "r") && (computerGuess === "s")) {
+        if ((user1Guess === "r") || (user1Guess === "p") || (user1Guess === "s")) {
+            if ((user1Guess === "r") && (user2Guess === "s")) {
                 wins++
             }
-            else if ((userGuess == "r") && (computerGuess === "p")) {
+            else if ((user1Guess == "r") && (user2Guess === "p")) {
                 losses++
             }
-            else if ((userGuess === "p") && (computerGuess === "r")) {
+            else if ((user1Guess === "p") && (user2Guess === "r")) {
                 wins++
             }
-            else if ((userGuess === "p") && (computerGuess === "s")) {
+            else if ((user1Guess === "p") && (user2Guess === "s")) {
                 losses++
             }
-            else if ((userGuess === "s") && (computerGuess === "p")) {
+            else if ((user1Guess === "s") && (user2Guess === "p")) {
                 wins++
             }
-            else if ((userGuess === "s") && (computerGuess === "r")) {
+            else if ((user1Guess === "s") && (user2Guess === "r")) {
                 losses++
             }
-            else if (userGuess === computerGuess) {
+            else if (user1Guess === user2Guess) {
                 ties++
             }
         };
     
         directionsText.textContent = " ";
-        user1ChoiceText.textContent = "You chose " + userGuess + ".";
-        user2ChoiceText.textContent = "The computer chose " + computerGuess + ".";
+        user1ChoiceText.textContent = "You chose " + user1Guess + ".";
+        user2ChoiceText.textContent = "Player 2 chose " + user2Guess + ".";
         winsText.textContent = "Wins: " + wins;
         lossesText.textContent = "Losses: " + losses;
         tiesText.textContent = "Ties: " + ties;

@@ -292,3 +292,21 @@ function updateScoreBoard() {
         $("#2-player2-ties").text("Ties: " + player2Ties);
     });
 };
+function resetScore() {
+    database.ref().update({
+        "player1ChoiceFB": "",
+        "player1WinsFB": 0,
+        "player1LossesFB": 0,
+        "player1TiesFB": 0,
+        "player2ChoiceFB": "",
+        "player2WinsFB": 0,
+        "player2LossesFB": 0,
+        "player2TiesFB": 0,
+        "player1BtnClickFB": false,
+        "player2BtnClickFB": false,
+    });
+}
+$("#reset-score").on("click", function(event){
+    event.preventDefault();
+    resetScore();
+})

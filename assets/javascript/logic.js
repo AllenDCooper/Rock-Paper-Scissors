@@ -1,3 +1,17 @@
+// Your web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyCAfo7rirhhq_ZjAS6P3FGT4zxf1vzSQSQ",
+    authDomain: "rock-paper-scissors-mp-3db66.firebaseapp.com",
+    databaseURL: "https://rock-paper-scissors-mp-3db66.firebaseio.com",
+    projectId: "rock-paper-scissors-mp-3db66",
+    storageBucket: "",
+    messagingSenderId: "353378985548",
+    appId: "1:353378985548:web:7ebb5a7665080ae9"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+
 // hide player buttons until players have joined game
 $("#player1-buttons").hide();
 $("#player2-buttons").hide();
@@ -6,38 +20,41 @@ $("#player2-scoreboard").hide();
 $("#player1-start").hide();
 $("#player2-start").hide();
 
-// show player buttons if user is not already selected
+// global variables
+var player1Start;
+var player2Start;
+
+// run database listeners on page load
 $(document).ready(function(){
+    showPlayerButtons();
+    scoreRoundListener();
+});
+
+// show/hide available player buttons
+function showPlayerButtons(){
+    // set watcher to show/hide buttons if values in database change
     database.ref().on("value", function(snapshot) {
-        curPlayer1Start = snapshot.val().player1StartFB;
-        curPlayer2Start = snapshot.val().player2StartFB;
-        console.log(curPlayer1Start);
-        console.log(curPlayer2Start);
-        if (curPlayer1Start === false) {
+        player1Start = snapshot.val().player1StartFB;
+        player2Start = snapshot.val().player2StartFB;
+        console.log(player1Start);
+        console.log(player2Start);
+        if (player1Start === false) {
             $("#player1-start").show();
         } else {
             $("#player1-start").hide();
         }
-        if (curPlayer2Start === false) {
+        if (player2Start === false) {
             $("#player2-start").show();
         } else {
             $("#player2-start").hide();
         }
-        if (curPlayer1Start === true && curPlayer2Start === true) {
-            $("#select-player-head").text("Wait for available player, or reset");
-        }
     });
-});
-
-// assigning player roles
-var player1Start = $("#player1-start");
-var player2Start = $("#player2-start");
+};
 
 // function for reseting players
 function resetPlayers() {
-    // player1Start = false;
-    // player2Start = false;
-    database.ref().set({
+    // reset start values in the database to false
+    database.ref().update({
         // whether player has been selected
         "player1StartFB": false,
         "player2StartFB": false,
@@ -60,51 +77,45 @@ $("#reset-players").on("click", function(){
 
 // when user selects Player 1 role
 $("#player1-start").on("click", function(event){
-    // event.preventDefault();
-    var curPlayer2Start; 
-    player1Start = true;
+    event.preventDefault();
+    // update value in database to true
     database.ref().update({
-        "player1StartFB": player1Start,
+        "player1StartFB": true,
     });
-    database.ref().on("value", function(snapshot) {
-        curPlayer2Start = snapshot.val().player2StartFB;
-        console.log(curPlayer2Start);
-        $("#player1-start").hide();
-        $("#select-player-head").text("You are Player 1");
-        if (curPlayer2Start === false) {
-            $("#directions-text").text("Waiting for Player 2 to join");
-        } else {
-            $("#player1-start").hide();
-            $("#player2-start").hide();
-            $("#directions-text").text("Select rock, paper, or scissors.")
-            $("#player1-buttons").show();
-            $("#player1-scoreboard").show();
-        };
-    });
+    // display game buttons and scoreboard
+    console.log(player2Start);
+    $("#player1-start").hide();
+    $("#player2-start").hide();
+    $("#select-player-head").text("You are Player 1");
+    $("#player1-buttons").show();
+    $("#player1-scoreboard").show();
+    // displays instructions to wait for other player or game directions
+    if (player2Start === false) {
+        $("#directions-text").text("Waiting for Player 2 to join");
+    } else {
+        $("#directions-text").text("Select rock, paper, or scissors.")
+    };
 });
 
 $("#player2-start").on("click", function(event){
-    // event.preventDefault();
-    var curPlayer1Start;
-    player2Start = true;
+    event.preventDefault();
+    // update value in database to true
     database.ref().update({
-        "player2StartFB": player2Start,
+        "player2StartFB": true,
     });
-    database.ref().on("value", function(snapshot) {
-        curPlayer1Start = snapshot.val().player1StartFB;
-        console.log(curPlayer1Start);
-        $("#player2-start").hide();
-        $("#select-player-head").text("You are Player 2");
-        if (curPlayer1Start === false) {
-            $("#directions-text").text("Waiting for Player 1 to join");
-        } else {
-            $("#player1-start").hide();
-            $("#player2-start").hide();
-            $("#directions-text").text("Select rock, paper, or scissors.")
-            $("#player2-buttons").show();
-            $("#player2-scoreboard").show();
-        };
-    });
+    // display game buttons and scoreboard
+    console.log(player1Start);
+    $("#player1-start").hide();
+    $("#player2-start").hide();
+    $("#select-player-head").text("You are Player 2");
+    $("#player2-buttons").show();
+    $("#player2-scoreboard").show();
+    // displays instructions to wait for other player or game directions
+    if (player1Start === false) {
+        $("#directions-text").text("Waiting for Player 1 to join");
+    } else {
+        $("#directions-text").text("Select rock, paper, or scissors.")
+    };
 });
 
 // RPS game logic
@@ -120,67 +131,59 @@ var player2Ties = 0;
 var player1Choice;
 var player2Choice;
 
-var player1btn = $(".player1-btn");
-var player2btn = $(".player2-btn");
-player1btn = false;
-player2btn = false;
-
-var curPlayer1btn;
-var curPlayer2btn;
+var player1BtnClick;
+var player2BtnClick;
 var curPlayer1Choice;
 var curPlayer2Choice;
 
-
+// click handler for player 1 rock/paper/scissor buttons
 $(".player1-btn").on("click", function(event){
     event.preventDefault();
     player1Choice = $(this).attr("data-value")
     console.log(player1Choice);
-    player1btn = true;
+    // update database, setting click as true and storing button value
     database.ref().update({
-        "player1btnFB": player1btn,
+        "player1BtnClickFB": true,
         "player1ChoiceFB": player1Choice,
     });
-    database.ref().once("value", function(snapshot) {
-        curPlayer1btn = snapshot.val().player1btnFB;
-        curPlayer1Choice = snapshot.val().player1ChoiceFB;
-        // curPlayer2btn = snapshot.val().player2btnFB;
-        curPlayer2Choice = snapshot.val().player2ChoiceFB;
-        $("#directions-text").text("");
-        // if (curPlayer1btn === true && curPlayer2btn === true) {
-        //     scoreRound();
-        // } else {
-        //     $("#directions-text").text("Waiting for Player 2");
-        // }
-    });
+    if (player2BtnClick === false) {
+        $("#directions-text").text("Waiting for Player 2");
+    }
 });
 
+// click handler for player 2 rock/paper/scissor buttons
 $(".player2-btn").on("click", function(event){
     event.preventDefault();
     player2Choice = $(this).attr("data-value")
-    player2btn = true;
+    console.log(player2Choice);
+    // update database, setting click as true and storing button value
     database.ref().update({
-        "player2btnFB": player2btn,
+        "player2BtnClickFB": true,
         "player2ChoiceFB": player2Choice,
     });
-    database.ref().once("value", function(snapshot) {
-        curPlayer2btn = snapshot.val().player2btnFB;
-        curPlayer2Choice = snapshot.val().player2ChoiceFB;
-        console.log(player1btn);
-        console.log(player1Choice);
-        console.log(curPlayer1Choice);
-        // curPlayer1btn = snapshot.val().player1btnFB;
-        curPlayer1Choice = snapshot.val().player1ChoiceFB;
-        $("#directions-text").text("");
-        // if (curPlayer1btn === true && curPlayer2btn === true) {
-        //     scoreRound();
-        // } else {
-        //     $("#directions-text").text("Waiting for Player 1");
-        // };
-    });
+    if (player1BtnClick === false) {
+        $("#directions-text").text("Waiting for Player 1");
+    }
 });
+
+// set firebase listener to score round once both players have clicked rock/paper/scissors buttons
+function scoreRoundListener(){
+    database.ref().on("value", function(snapshot) {
+        player1BtnClick = snapshot.val().player1BtnClickFB;
+        curPlayer1Choice = snapshot.val().player1ChoiceFB;
+        player2BtnClick = snapshot.val().player2BtnClickFB;
+        curPlayer2Choice = snapshot.val().player2ChoiceFB;
+        console.log(player1BtnClick);
+        console.log(player2BtnClick);
+        if (player1BtnClick === true && player2BtnClick === true) {
+            scoreRound();
+        }
+    });
+}
 
 // scoring function
 function scoreRound() {
+    console.log(curPlayer1Choice, curPlayer2Choice);
     if ((curPlayer1Choice === "rock") || (curPlayer1Choice === "paper") || (curPlayer1Choice === "scissors")) {
         if ((curPlayer1Choice === "rock") && (curPlayer2Choice === "scissors")) {
             player1Wins++;
@@ -210,15 +213,19 @@ function scoreRound() {
             player1Ties++;
             player2Ties++;
         }
+        // update database with current values
         database.ref().update({
             "player1WinsFB": player1Wins,
             "player1LossesFB": player1Losses,
             "player1TiesFB": player1Ties,
             "player2WinsFB": player2Wins,
             "player2LossesFB": player2Losses,
-            "player2Ties": player2Ties,
+            "player2TiesFB": player2Ties,
+            "player1BtnClickFB": false,
+            "player2BtnClickFB": false,
         });
     };
+    // set listener to update value of variables everytime value in database changes 
     database.ref().on("value", function(snapshot) {
         curPlayer1Choice = snapshot.val().player1ChoiceFB;
         curPlayer1Wins = snapshot.val().player1WinsFB;
@@ -241,22 +248,4 @@ function scoreRound() {
     $("#2-player2-wins").text("Wins: " + curPlayer2Wins);
     $("#2-player2-losses").text("Losses: " + curPlayer2Losses);
     $("#2-player2-ties").text("Ties: " + curPlayer2Ties);
-}
-
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyCAfo7rirhhq_ZjAS6P3FGT4zxf1vzSQSQ",
-    authDomain: "rock-paper-scissors-mp-3db66.firebaseapp.com",
-    databaseURL: "https://rock-paper-scissors-mp-3db66.firebaseio.com",
-    projectId: "rock-paper-scissors-mp-3db66",
-    storageBucket: "",
-    messagingSenderId: "353378985548",
-    appId: "1:353378985548:web:7ebb5a7665080ae9"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  var database = firebase.database();
-
-// saving game variables into firebase
-
-
+};

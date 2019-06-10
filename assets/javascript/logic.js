@@ -178,17 +178,21 @@ var curPlayer2Choice;
 
 // click handler for player 1 rock/paper/scissor buttons
 $(".player1-btn").on("click", function(event){
-    event.preventDefault();
+    // event.preventDefault();
     player1Choice = $(this).attr("data-value")
     console.log(player1Choice);
+    $("#1-player1-choice").text("You played: " + player1Choice);
+    $("#1-player2-choice").text("Player 2 played: ");
+    $("#2-player1-choice").text("");
+    $("#2-player2-choice").text("");
     // update database, setting click as true and storing button value
     database.ref().update({
         "player1BtnClickFB": true,
         "player1ChoiceFB": player1Choice,
     });
-    if (player2BtnClick === false) {
-        $("#directions-text").text("Waiting for Player 2");
-    }
+    // if (player2BtnClick === false) {
+    //     $("#directions-text").text("Waiting for Player 2");
+    // }
 });
 
 // click handler for player 2 rock/paper/scissor buttons
@@ -196,14 +200,18 @@ $(".player2-btn").on("click", function(event){
     event.preventDefault();
     player2Choice = $(this).attr("data-value")
     console.log(player2Choice);
+    $("#1-player1-choice").text("");
+    $("#1-player2-choice").text("");
+    $("#2-player1-choice").text("Player 2 played: ");
+    $("#2-player2-choice").text("You played: "+ player2Choice);
     // update database, setting click as true and storing button value
     database.ref().update({
         "player2BtnClickFB": true,
         "player2ChoiceFB": player2Choice,
     });
-    if (player1BtnClick === false) {
-        $("#directions-text").text("Waiting for Player 1");
-    }
+    // if (player1BtnClick === false) {
+    //     $("#directions-text").text("Waiting for Player 1");
+    // }
 });
 
 // set firebase listener to score round once both players have clicked rock/paper/scissors buttons
@@ -269,7 +277,7 @@ function scoreRound() {
 };
 
 function updateScoreBoard() {
-    database.ref().on("value", function(snapshot) {
+    database.ref().once("value", function(snapshot) {
         curPlayer1Choice = snapshot.val().player1ChoiceFB;
         player1Wins = snapshot.val().player1WinsFB;
         player1Losses = snapshot.val().player1LossesFB;

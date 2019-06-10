@@ -11,6 +11,8 @@ $(document).ready(function(){
     database.ref().on("value", function(snapshot) {
         curPlayer1Start = snapshot.val().player1StartFB;
         curPlayer2Start = snapshot.val().player2StartFB;
+        console.log(curPlayer1Start);
+        console.log(curPlayer2Start);
         if (curPlayer1Start === false) {
             $("#player1-start").show();
         } else {
@@ -125,6 +127,9 @@ player2btn = false;
 
 var curPlayer1btn;
 var curPlayer2btn;
+var curPlayer1Choice;
+var curPlayer2Choice;
+
 
 $(".player1-btn").on("click", function(event){
     event.preventDefault();
@@ -135,17 +140,17 @@ $(".player1-btn").on("click", function(event){
         "player1btnFB": player1btn,
         "player1ChoiceFB": player1Choice,
     });
-    database.ref().on("value", function(snapshot) {
+    database.ref().once("value", function(snapshot) {
         curPlayer1btn = snapshot.val().player1btnFB;
-        console.log(curPlayer1btn);
         curPlayer1Choice = snapshot.val().player1ChoiceFB;
-        console.log(curPlayer1Choice);
+        // curPlayer2btn = snapshot.val().player2btnFB;
+        curPlayer2Choice = snapshot.val().player2ChoiceFB;
         $("#directions-text").text("");
-        if (curPlayer1btn === true && curPlayer2btn === true) {
-            scoreRound();
-        } else {
-            $("#directions-text").text("Waiting for Player 2");
-        }
+        // if (curPlayer1btn === true && curPlayer2btn === true) {
+        //     scoreRound();
+        // } else {
+        //     $("#directions-text").text("Waiting for Player 2");
+        // }
     });
 });
 
@@ -157,64 +162,85 @@ $(".player2-btn").on("click", function(event){
         "player2btnFB": player2btn,
         "player2ChoiceFB": player2Choice,
     });
-    database.ref().on("value", function(snapshot) {
+    database.ref().once("value", function(snapshot) {
         curPlayer2btn = snapshot.val().player2btnFB;
-        console.log(curPlayer2btn);
         curPlayer2Choice = snapshot.val().player2ChoiceFB;
-        console.log(curPlayer2Choice);
+        console.log(player1btn);
+        console.log(player1Choice);
+        console.log(curPlayer1Choice);
+        // curPlayer1btn = snapshot.val().player1btnFB;
+        curPlayer1Choice = snapshot.val().player1ChoiceFB;
         $("#directions-text").text("");
-        if (player1btn === true && player2btn === true) {
-            scoreRound();
-        } else {
-            $("#directions-text").text("Waiting for Player 1");
-        };
+        // if (curPlayer1btn === true && curPlayer2btn === true) {
+        //     scoreRound();
+        // } else {
+        //     $("#directions-text").text("Waiting for Player 1");
+        // };
     });
 });
 
 // scoring function
 function scoreRound() {
-    if ((player1Choice === "rock") || (player1Choice === "paper") || (player1Choice === "scissors")) {
-        if ((player1Choice === "rock") && (player2Choice === "scissors")) {
+    if ((curPlayer1Choice === "rock") || (curPlayer1Choice === "paper") || (curPlayer1Choice === "scissors")) {
+        if ((curPlayer1Choice === "rock") && (curPlayer2Choice === "scissors")) {
             player1Wins++;
             player2Losses++
         }
-        else if ((player1Choice == "rock") && (player2Choice === "paper")) {
+        else if ((curPlayer1Choice == "rock") && (curPlayer2Choice === "paper")) {
             player1Losses++;
             player2Wins++;
         }
-        else if ((player1Choice === "paper") && (player2Choice === "rock")) {
+        else if ((curPlayer1Choice === "paper") && (curPlayer2Choice === "rock")) {
             player1Wins++;
             player2Losses++;
         }
-        else if ((player1Choice === "paper") && (player2Choice === "scissors")) {
+        else if ((curPlayer1Choice === "paper") && (curPlayer2Choice === "scissors")) {
             player1Losses++;
             player2Wins++;
         }
-        else if ((player1Choice === "scissors") && (player2Choice === "paper")) {
+        else if ((curPlayer1Choice === "scissors") && (curPlayer2Choice === "paper")) {
             player1Wins++;
             player2Losses++;
         }
-        else if ((player1Choice === "scissors") && (player2Choice === "rock")) {
+        else if ((curPlayer1Choice === "scissors") && (curPlayer2Choice === "rock")) {
             player1Losses++;
             player2Wins++;
         }
-        else if (player1Choice === player2Choice) {
+        else if (curPlayer1Choice === curPlayer2Choice) {
             player1Ties++;
             player2Ties++;
         }
+        database.ref().update({
+            "player1WinsFB": player1Wins,
+            "player1LossesFB": player1Losses,
+            "player1TiesFB": player1Ties,
+            "player2WinsFB": player2Wins,
+            "player2LossesFB": player2Losses,
+            "player2Ties": player2Ties,
+        });
     };
+    database.ref().on("value", function(snapshot) {
+        curPlayer1Choice = snapshot.val().player1ChoiceFB;
+        curPlayer1Wins = snapshot.val().player1WinsFB;
+        curPlayer1Losses = snapshot.val().player1LossesFB;
+        curPlayer1Ties = snapshot.val().player1TiesFB;
+        curPlayer2Choice = snapshot.val().player2ChoiceFB;
+        curPlayer2Wins = snapshot.val().player2WinsFB;
+        curPlayer2Losses = snapshot.val().player2LossesFB;
+        curPlayer2Ties = snapshot.val().player2TiesFB;
+    });
     // update player 1 scoreboard
-    $("#1-player1-choice").text("You play: " + player1Choice);
-    $("#1-player2-choice").text("Player 2 plays: " + player2Choice);
-    $("#1-player1-wins").text("Wins: " + player1Wins);
-    $("#1-player1-losses").text("Losses: " + player1Losses);
-    $("#1-player1-ties").text("Ties: " + player1Ties);
+    $("#1-player1-choice").text("You play: " + curPlayer1Choice);
+    $("#1-player2-choice").text("Player 2 plays: " + curPlayer2Choice);
+    $("#1-player1-wins").text("Wins: " + curPlayer1Wins);
+    $("#1-player1-losses").text("Losses: " + curPlayer1Losses);
+    $("#1-player1-ties").text("Ties: " + curPlayer1Ties);
     // update player 2 scoreboard
-    $("#2-player2-choice").text("You play: " + player2Choice);
-    $("#2-player1-choice").text("Player 2 plays: " + player1Choice);
-    $("#2-player2-wins").text("Wins: " + player2Wins);
-    $("#2-player2-losses").text("Losses: " + player2Losses);
-    $("#2-player2-ties").text("Ties: " + player2Ties);
+    $("#2-player2-choice").text("You play: " + curPlayer2Choice);
+    $("#2-player1-choice").text("Player 1 plays: " + curPlayer1Choice);
+    $("#2-player2-wins").text("Wins: " + curPlayer2Wins);
+    $("#2-player2-losses").text("Losses: " + curPlayer2Losses);
+    $("#2-player2-ties").text("Ties: " + curPlayer2Ties);
 }
 
   // Your web app's Firebase configuration

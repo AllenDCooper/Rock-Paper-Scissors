@@ -44,6 +44,15 @@ function showPlayerButtons(){
         } else if (player1Start === false && player2Start === false) {
             $("#player1-start").show();
             $("#player2-start").show();
+            // reseting document structure and texts
+            $("#player1-buttons").hide();
+            $("#player2-buttons").hide();
+            $("#player1-scoreboard").hide();
+            $("#player2-scoreboard").hide();
+            $("#directions-text").hide();
+            $("#select-player-head").text("Select available player");
+            $("#player1-start").show();
+            $("#player2-start").show();
         } else if( player1Start === true && player2Start === false) {
             $("#player1-start").hide();
             $("#player2-start").show();
@@ -63,15 +72,6 @@ function resetPlayers() {
         "player1StartFB": false,
         "player2StartFB": false,
     });
-    // reseting document structure and texts
-    $("#player1-buttons").hide();
-    $("#player2-buttons").hide();
-    $("#player1-scoreboard").hide();
-    $("#player2-scoreboard").hide();
-    $("#directions-text").hide();
-    $("#select-player-head").text("Select available player");
-    $("#player1-start").show();
-    $("#player2-start").show();
 };
 
 // click handler for calling reset players function

@@ -6,6 +6,7 @@ $("#player2-scoreboard").hide();
 $("#player1-start").hide();
 $("#player2-start").hide();
 
+// show player buttons if user is not already selected
 $(document).ready(function(){
     database.ref().on("value", function(snapshot) {
         curPlayer1Start = snapshot.val().player1StartFB;
@@ -20,6 +21,9 @@ $(document).ready(function(){
         } else {
             $("#player2-start").hide();
         }
+        if (curPlayer1Start === true && curPlayer2Start === true) {
+            $("#select-player-head").text("Wait for available player, or reset");
+        }
     });
 });
 
@@ -29,13 +33,14 @@ var player2Start = $("#player2-start");
 
 // function for reseting players
 function resetPlayers() {
-    player1Start = false;
-    player2Start = false;
+    // player1Start = false;
+    // player2Start = false;
     database.ref().set({
         // whether player has been selected
-        player1StartFB: player1Start,
-        player2StartFB: player2Start,
+        "player1StartFB": false,
+        "player2StartFB": false,
     });
+    // reseting document structure and texts
     $("#player1-buttons").hide();
     $("#player2-buttons").hide();
     $("#player1-scoreboard").hide();
@@ -51,6 +56,7 @@ $("#reset-players").on("click", function(){
     resetPlayers();
 });
 
+// when user selects Player 1 role
 $("#player1-start").on("click", function(event){
     // event.preventDefault();
     var curPlayer2Start; 
@@ -117,30 +123,52 @@ var player2btn = $(".player2-btn");
 player1btn = false;
 player2btn = false;
 
+var curPlayer1btn;
+var curPlayer2btn;
+
 $(".player1-btn").on("click", function(event){
     event.preventDefault();
     player1Choice = $(this).attr("data-value")
     console.log(player1Choice);
     player1btn = true;
-    $("#directions-text").text("");
-    if (player1btn === true && player2btn === true) {
-        scoreRound();
-    } else {
-        $("#directions-text").text("Waiting for Player 2");
-    }
+    database.ref().update({
+        "player1btnFB": player1btn,
+        "player1ChoiceFB": player1Choice,
+    });
+    database.ref().on("value", function(snapshot) {
+        curPlayer1btn = snapshot.val().player1btnFB;
+        console.log(curPlayer1btn);
+        curPlayer1Choice = snapshot.val().player1ChoiceFB;
+        console.log(curPlayer1Choice);
+        $("#directions-text").text("");
+        if (curPlayer1btn === true && curPlayer2btn === true) {
+            scoreRound();
+        } else {
+            $("#directions-text").text("Waiting for Player 2");
+        }
+    });
 });
 
 $(".player2-btn").on("click", function(event){
     event.preventDefault();
     player2Choice = $(this).attr("data-value")
-    console.log(player2Choice);
     player2btn = true;
-    $("#directions-text").text("");
-    if (player1btn === true && player2btn === true) {
-        scoreRound();
-    } else {
-        $("#directions-text").text("Waiting for Player 1");
-    };
+    database.ref().update({
+        "player2btnFB": player2btn,
+        "player2ChoiceFB": player2Choice,
+    });
+    database.ref().on("value", function(snapshot) {
+        curPlayer2btn = snapshot.val().player2btnFB;
+        console.log(curPlayer2btn);
+        curPlayer2Choice = snapshot.val().player2ChoiceFB;
+        console.log(curPlayer2Choice);
+        $("#directions-text").text("");
+        if (player1btn === true && player2btn === true) {
+            scoreRound();
+        } else {
+            $("#directions-text").text("Waiting for Player 1");
+        };
+    });
 });
 
 // scoring function

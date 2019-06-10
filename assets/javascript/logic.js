@@ -60,6 +60,7 @@ function showPlayerButtons(){
             $("#player1-start").hide();
             $("#player2-start").hide();
             $("#directions-text").text("Select rock, paper, or scissors.");
+            $("#directions-waiting-text").text("");
         }
     });
 };
@@ -95,7 +96,7 @@ $("#player1-start").on("click", function(event){
     $("#player1-scoreboard").show();
     // displays instructions to wait for other player or game directions
     if (player2Start === false) {
-        $("#directions-text").text("Waiting for Player 2 to join");
+        $("#directions-waiting-text").text("Waiting for Player 2 to join");
     } else {
         $("#directions-text").text("Select rock, paper, or scissors.")
     };
@@ -116,7 +117,7 @@ $("#player2-start").on("click", function(event){
     $("#player2-scoreboard").show();
     // displays instructions to wait for other player or game directions
     if (player1Start === false) {
-        $("#directions-text").text("Waiting for Player 1 to join");
+        $("#directions-waiting-text").text("Waiting for Player 1 to join");
     } else {
         $("#directions-text").text("Select rock, paper, or scissors.")
     };

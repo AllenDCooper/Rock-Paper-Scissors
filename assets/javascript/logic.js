@@ -3,56 +3,93 @@ $("#player1-buttons").hide();
 $("#player2-buttons").hide();
 $("#player1-scoreboard").hide();
 $("#player2-scoreboard").hide();
+$("#player1-start").hide();
+$("#player2-start").hide();
+
+$(document).ready(function(){
+    database.ref().on("value", function(snapshot) {
+        curPlayer1Start = snapshot.val().player1StartFB;
+        curPlayer2Start = snapshot.val().player2StartFB;
+        if (curPlayer1Start === false) {
+            $("#player1-start").show();
+        } else {
+            $("#player1-start").hide();
+        }
+        if (curPlayer2Start === false) {
+            $("#player2-start").show();
+        } else {
+            $("#player2-start").hide();
+        }
+    });
+});
 
 // assigning player roles
 var player1Start = $("#player1-start");
 var player2Start = $("#player2-start");
-player1Start = false;
-player2Start = false;
 
-$("#player1-start").on("click", function(){
+// function for reseting players
+function resetPlayers() {
+    player1Start = false;
+    player2Start = false;
+    database.ref().set({
+        // whether player has been selected
+        player1StartFB: player1Start,
+        player2StartFB: player2Start,
+    });
+};
+
+// click handler for calling reset players function
+$("#reset-players").on("click", function(){
+    resetPlayers();
+});
+
+$("#player1-start").on("click", function(event){
+    // event.preventDefault();
     var curPlayer2Start; 
     player1Start = true;
-    database.ref().set({
-        player1StartFB: player1Start,
+    database.ref().update({
+        "player1StartFB": player1Start,
     });
     database.ref().on("value", function(snapshot) {
         curPlayer2Start = snapshot.val().player2StartFB;
+        console.log(curPlayer2Start);
+        $("#player1-start").hide();
+        $("#select-player-head").text("You are Player 1");
+        if (curPlayer2Start === false) {
+            $("#directions-text").text("Waiting for Player 2 to join");
+        } else {
+            $("#player1-start").hide();
+            $("#player2-start").hide();
+            $("#directions-text").text("Select rock, paper, or scissors.")
+            $("#player1-buttons").show();
+            $("#player1-scoreboard").show();
+        };
     });
-    console.log(curPlayer2Start);
-    $(this).hide();
-    $("#select-player-head").text("You are Player 1");
-    $("#player1-buttons").show();
-    $("#player1-scoreboard").show();
-    if (curPlayer2Start === false) {
-        $("#directions-text").text("Waiting for Player 2 to join");
-    } else {
-        $("#directions-text").text("Select rock, paper, or scissors.")
-    };
 });
 
-
-$("#player2-start").on("click", function(){
+$("#player2-start").on("click", function(event){
+    // event.preventDefault();
     var curPlayer1Start;
     player2Start = true;
-    database.ref().set({
-        player2StartFB: player2Start,
+    database.ref().update({
+        "player2StartFB": player2Start,
     });
     database.ref().on("value", function(snapshot) {
         curPlayer1Start = snapshot.val().player1StartFB;
+        console.log(curPlayer1Start);
+        $("#player2-start").hide();
+        $("#select-player-head").text("You are Player 2");
+        if (curPlayer1Start === false) {
+            $("#directions-text").text("Waiting for Player 1 to join");
+        } else {
+            $("#player1-start").hide();
+            $("#player2-start").hide();
+            $("#directions-text").text("Select rock, paper, or scissors.")
+            $("#player2-buttons").show();
+            $("#player2-scoreboard").show();
+        };
     });
-    console.log(curPlayer1Start);
-    $(this).hide();
-    $("#select-player-head").text("You are Player 2");
-    $("#player2-buttons").show();
-    $("#player2-scoreboard").show();
-    if (curPlayer1Start === false) {
-        $("#directions-text").text("Waiting for Player 1 to join");
-    } else {
-        $("#directions-text").text("Select rock, paper, or scissors.")
-    };
 });
-
 
 // RPS game logic
 // creating global game variables
@@ -72,7 +109,8 @@ var player2btn = $(".player2-btn");
 player1btn = false;
 player2btn = false;
 
-$(".player1-btn").on("click", function(){
+$(".player1-btn").on("click", function(event){
+    event.preventDefault();
     player1Choice = $(this).attr("data-value")
     console.log(player1Choice);
     player1btn = true;
@@ -82,9 +120,10 @@ $(".player1-btn").on("click", function(){
     } else {
         $("#directions-text").text("Waiting for Player 2");
     }
-})
+});
 
-$(".player2-btn").on("click", function(){
+$(".player2-btn").on("click", function(event){
+    event.preventDefault();
     player2Choice = $(this).attr("data-value")
     console.log(player2Choice);
     player2btn = true;
@@ -157,9 +196,5 @@ function scoreRound() {
   var database = firebase.database();
 
 // saving game variables into firebase
-  database.ref().set({
-      // whether player has been selected
-      player1StartFB: player1Start,
-      player2StartFB: player2Start,
-  });
+
 

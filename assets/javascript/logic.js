@@ -41,9 +41,12 @@ function showPlayerButtons(){
         if (player1Start === false && player2Start === true) {
             $("#player1-start").show();
             $("#player2-start").hide();
+            $("#directions-waiting-text").show();
         } else if (player1Start === false && player2Start === false) {
             $("#player1-start").show();
             $("#player2-start").show();
+            $("#directions-waiting-text").text("");
+            $("#directions-waiting-text").hide();
             // reseting document structure and texts
             $("#player1-buttons").hide();
             $("#player2-buttons").hide();
@@ -53,14 +56,17 @@ function showPlayerButtons(){
             $("#select-player-head").text("Select available player");
             $("#player1-start").show();
             $("#player2-start").show();
+            $("#directions-waiting-text").show();
         } else if( player1Start === true && player2Start === false) {
             $("#player1-start").hide();
             $("#player2-start").show();
+            $("#directions-waiting-text").show();
         } else {
             $("#player1-start").hide();
             $("#player2-start").hide();
             $("#directions-text").text("Select rock, paper, or scissors.");
-            $("#directions-waiting-text").text("");
+            $("#directions-waiting-text").show();
+            $("#directions-waiting-text").text(">Both players selected<");
         }
     });
 };

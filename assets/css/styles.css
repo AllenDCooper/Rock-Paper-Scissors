@@ -1,0 +1,8 @@
+#select-player, #directions-text, #player-buttons, #player-scoreboards {
+    margin: 30px;
+}
+
+#player-scoreboards {
+    background-color: black;
+    color: white;
+}

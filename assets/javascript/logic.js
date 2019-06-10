@@ -38,15 +38,19 @@ function showPlayerButtons(){
         player2Start = snapshot.val().player2StartFB;
         console.log(player1Start);
         console.log(player2Start);
-        if (player1Start === false) {
+        if (player1Start === false && player2Start === true) {
             $("#player1-start").show();
-        } else {
+            $("#player2-start").hide();
+        } else if (player1Start === false && player2Start === false) {
+            $("#player1-start").show();
+            $("#player2-start").show();
+        } else if( player1Start === true && player2Start === false) {
             $("#player1-start").hide();
-        }
-        if (player2Start === false) {
             $("#player2-start").show();
         } else {
+            $("#player1-start").hide();
             $("#player2-start").hide();
+            $("#directions-text").text("Select rock, paper, or scissors.");
         }
     });
 };
@@ -120,16 +124,28 @@ $("#player2-start").on("click", function(event){
 
 // RPS game logic
 // creating global game variables
-var player1Wins = 0;
-var player1Losses = 0;
-var player1Ties = 0;
 
-var player2Wins = 0;
-var player2Losses = 0;
-var player2Ties = 0;
+database.ref().on("value", function(snapshot) {
+    curPlayer1Choice = snapshot.val().player1ChoiceFB;
+    player1Wins = snapshot.val().player1WinsFB;
+    player1Losses = snapshot.val().player1LossesFB;
+    player1Ties = snapshot.val().player1TiesFB;
+    curPlayer2Choice = snapshot.val().player2ChoiceFB;
+    player2Wins = snapshot.val().player2WinsFB;
+    player2Losses = snapshot.val().player2LossesFB;
+    player2Ties = snapshot.val().player2TiesFB;
+});
 
-var player1Choice;
-var player2Choice;
+// var player1Wins;
+// var player1Losses;
+// var player1Ties;
+
+// var player2Wins;
+// var player2Losses;
+// var player2Ties 
+
+// var player1Choice;
+// var player2Choice;
 
 var player1BtnClick;
 var player2BtnClick;
@@ -226,26 +242,17 @@ function scoreRound() {
         });
     };
     // set listener to update value of variables everytime value in database changes 
-    database.ref().on("value", function(snapshot) {
-        curPlayer1Choice = snapshot.val().player1ChoiceFB;
-        curPlayer1Wins = snapshot.val().player1WinsFB;
-        curPlayer1Losses = snapshot.val().player1LossesFB;
-        curPlayer1Ties = snapshot.val().player1TiesFB;
-        curPlayer2Choice = snapshot.val().player2ChoiceFB;
-        curPlayer2Wins = snapshot.val().player2WinsFB;
-        curPlayer2Losses = snapshot.val().player2LossesFB;
-        curPlayer2Ties = snapshot.val().player2TiesFB;
-    });
+    
     // update player 1 scoreboard
     $("#1-player1-choice").text("You play: " + curPlayer1Choice);
     $("#1-player2-choice").text("Player 2 plays: " + curPlayer2Choice);
-    $("#1-player1-wins").text("Wins: " + curPlayer1Wins);
-    $("#1-player1-losses").text("Losses: " + curPlayer1Losses);
-    $("#1-player1-ties").text("Ties: " + curPlayer1Ties);
+    $("#1-player1-wins").text("Wins: " + player1Wins);
+    $("#1-player1-losses").text("Losses: " + player1Losses);
+    $("#1-player1-ties").text("Ties: " + player1Ties);
     // update player 2 scoreboard
     $("#2-player2-choice").text("You play: " + curPlayer2Choice);
     $("#2-player1-choice").text("Player 1 plays: " + curPlayer1Choice);
-    $("#2-player2-wins").text("Wins: " + curPlayer2Wins);
-    $("#2-player2-losses").text("Losses: " + curPlayer2Losses);
-    $("#2-player2-ties").text("Ties: " + curPlayer2Ties);
+    $("#2-player2-wins").text("Wins: " + player2Wins);
+    $("#2-player2-losses").text("Losses: " + player2Losses);
+    $("#2-player2-ties").text("Ties: " + player2Ties);
 };

@@ -36,6 +36,14 @@ function resetPlayers() {
         player1StartFB: player1Start,
         player2StartFB: player2Start,
     });
+    $("#player1-buttons").hide();
+    $("#player2-buttons").hide();
+    $("#player1-scoreboard").hide();
+    $("#player2-scoreboard").hide();
+    $("#directions-text").hide();
+    $("#select-player-head").text("Select available player");
+    $("#player1-start").show();
+    $("#player2-start").show();
 };
 
 // click handler for calling reset players function

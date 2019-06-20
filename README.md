@@ -14,7 +14,7 @@ I. Using HTML and Bootstrap, created page structure with elements for the follow
 
 5. sections for each player's scoreboard, formatted using a Bootstrap grid layout
 
-I. Used JavaScript and jQuery library with Firebase and local storage to write game logic:
+II. Used JavaScript and jQuery library with Firebase and local storage to write game logic:
 
 1. Wrote click handlers for player1-chosen and player2-chosen buttons, that when clicked, set boolean variables to "true" both in both Firebase and in local storage, and that show the hidden gameboard for the player they selected
 

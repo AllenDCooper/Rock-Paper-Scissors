@@ -3,6 +3,27 @@
 }
 
 #player-scoreboards {
-    background-color: black;
-    color: white;
+    /* background-color: gray; */
+    border-style: solid;
+    border-width: 3px;
+    border-color: purple;
+    /* color: white; */
+    padding: 10px;
+}
+
+h1, h2 {
+    font-family: 'Anton', sans-serif;
+}
+
+#directions-waiting-text {
+    color: purple;
+    font-weight: bold;
+}
+
+.scoreboardData {
+    font-weight: bold;
+}
+
+#heading {
+    padding-left: 40px;
 }

@@ -8,49 +8,85 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-database.js"></script>
+    <!-- Style sheets -->
+    <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="jumbotron">
-        <h1>Play Rock, Paper, Scissors</h1>
-        <button id="reset-players">Reset Players</button>
-        <button id="reset-score">Reset Score</button>
+        <div class="container" id="heading">
+            <h1>Play Rock, Paper, Scissors</h1>
+            <button class="btn btn-light" id="reset-players">Reset Players</button>
+            <button class="btn btn-light" id="reset-score">Reset Score</button>
+        </div>
     </div>
     <div class="container">
         <div id="select-player">
             <h2 id="select-player-head">Select available player</h2>
             <p id="directions-waiting-text"></p>
-            <button id="player1-chosen">Player 1</button>
-            <button id="player2-chosen">Player 2</button>
+            <button class="btn-lg btn btn-secondary" id="player1-chosen">Player 1</button>
+            <button class="btn-lg btn btn-secondary" id="player2-chosen">Player 2</button>
         </div>
         <p id="directions-text"></p>
         <div id="player-buttons">
             <div id="player1-buttons">
-                <button class="player1-btn" data-value="rock">rock</button>
-                <button class="player1-btn" data-value="paper">paper</button>
-                <button class="player1-btn" data-value="scissors">scissors</button>
+                <button class="player1-btn btn-lg btn btn-secondary" data-value="rock">rock</button>
+                <button class="player1-btn btn-lg btn btn-secondary" data-value="paper">paper</button>
+                <button class="player1-btn btn-lg btn btn-secondary" data-value="scissors">scissors</button>
             </div>
             <div id="player2-buttons">
-                <button class="player2-btn" data-value="rock">rock</button>
-                <button class="player2-btn" data-value="paper">paper</button>
-                <button class="player2-btn" data-value="scissors">scissors</button>
+                <button class="player2-btn btn-lg btn btn-secondary" data-value="rock">rock</button>
+                <button class="player2-btn btn-lg btn btn-secondary" data-value="paper">paper</button>
+                <button class="player2-btn btn-lg btn btn-secondary" data-value="scissors">scissors</button>
             </div>
         </div>
         <div id="player-scoreboards">
             <div id="player1-scoreboard">
-                <p id="1-player1-choice">You play:</p>
-                <p id="1-player2-choice">Player 2 plays:</p>
-                <p id="1-player1-wins">Wins:</p>
-                <p id="1-player1-losses">Losses:</p>
-                <p id="1-player1-ties">Ties:</p>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6" ><p>You play:</p></div>
+                    <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="1-player1-choice"></p></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6"><p>Player 2 plays:</p></div>
+                    <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="1-player2-choice"></p></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6"><p>Wins:</p></div>
+                    <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="1-player1-wins"></p></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6"><p>Losses:</p></div>
+                    <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="1-player1-losses"></p></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-6"><p>Ties:</p></div>
+                    <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="1-player1-ties"></p></div>
+                </div>
             </div>
             <div id="player2-scoreboard">
-                <p id="2-player2-choice">You play:</p>
-                <p id="2-player1-choice">Player 1 plays:</p>
-                <p id="2-player2-wins">Wins:</p>
-                <p id="2-player2-losses">Losses:</p>
-                <p id="2-player2-ties">Ties:</p>
+                <div class="row">
+                        <div class="col-md-3 col-sm-6" ><p>You play:</p></div>
+                        <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="2-player2-choice"></p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6"><p>Player 1 plays:</p></div>
+                        <div class="col-md-3 col-sm-6"><p class="scoreboardData"  id="2-player1-choice"></p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6"><p>Wins:</p></div>
+                        <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="2-player2-wins"></p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6"><p>Losses:</p></div>
+                        <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="2-player2-losses"></p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6"><p>Ties:</p></div>
+                        <div class="col-md-3 col-sm-6"><p class="scoreboardData" id="2-player2-ties"></p></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -169,8 +169,8 @@ $(".player1-btn").on("click", function(event){
     // event.preventDefault();
     player1Choice = $(this).attr("data-value")
     console.log(player1Choice);
-    $("#1-player1-choice").text("You played: " + player1Choice);
-    $("#1-player2-choice").text("Player 2 played: ");
+    $("#1-player1-choice").text(player1Choice);
+    $("#1-player2-choice").text("");
     $("#2-player1-choice").text("");
     $("#2-player2-choice").text("");
     // update database, setting click as true and storing button value
@@ -187,8 +187,8 @@ $(".player2-btn").on("click", function(event){
     console.log(player2Choice);
     $("#1-player1-choice").text("");
     $("#1-player2-choice").text("");
-    $("#2-player1-choice").text("Player 2 played: ");
-    $("#2-player2-choice").text("You played: "+ player2Choice);
+    $("#2-player1-choice").text("");
+    $("#2-player2-choice").text(player2Choice);
     // update database, setting click as true and storing button value
     database.ref().update({
         "player2BtnClickFB": true,
@@ -261,10 +261,10 @@ function updatePlayerChoice() {
     database.ref().once("value", function(snapshot) {
         curPlayer1Choice = snapshot.val().player1ChoiceFB;
         curPlayer2Choice = snapshot.val().player2ChoiceFB;
-        $("#1-player1-choice").text("You played: " + curPlayer1Choice);
-        $("#1-player2-choice").text("Player 2 played: " + curPlayer2Choice);
-        $("#2-player2-choice").text("You played: " + curPlayer2Choice);
-        $("#2-player1-choice").text("Player 1 played: " + curPlayer1Choice);
+        $("#1-player1-choice").text(curPlayer1Choice);
+        $("#1-player2-choice").text(curPlayer2Choice);
+        $("#2-player2-choice").text(curPlayer2Choice);
+        $("#2-player1-choice").text(curPlayer1Choice);
     });
 };
 
@@ -281,15 +281,15 @@ function updateScoreBoard() {
         // update player 1 scoreboard
         // $("#1-player1-choice").text("You played: " + curPlayer1Choice);
         // $("#1-player2-choice").text("Player 2 played: " + curPlayer2Choice);
-        $("#1-player1-wins").text("Wins: " + player1Wins);
-        $("#1-player1-losses").text("Losses: " + player1Losses);
-        $("#1-player1-ties").text("Ties: " + player1Ties);
+        $("#1-player1-wins").text(player1Wins);
+        $("#1-player1-losses").text(player1Losses);
+        $("#1-player1-ties").text(player1Ties);
         // update player 2 scoreboard
         // $("#2-player2-choice").text("You played: " + curPlayer2Choice);
         // $("#2-player1-choice").text("Player 1 played: " + curPlayer1Choice);
-        $("#2-player2-wins").text("Wins: " + player2Wins);
-        $("#2-player2-losses").text("Losses: " + player2Losses);
-        $("#2-player2-ties").text("Ties: " + player2Ties);
+        $("#2-player2-wins").text(player2Wins);
+        $("#2-player2-losses").text(player2Losses);
+        $("#2-player2-ties").text(player2Ties);
     });
 };
 function resetScore() {

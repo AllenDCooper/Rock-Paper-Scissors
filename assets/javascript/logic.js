@@ -196,6 +196,18 @@ $(".player2-btn").on("click", function(event){
     });
 });
 
+// function to display on page what the players chose (rock, paper, or scissors). This is not a watcher "on" function, but a "once" function that will retrieve snapshot from firebase only when called. This ensures that a player1 doesn't see the player2's choice before player1 has chosen, and vice-versa. 
+function updatePlayerChoice() {
+    database.ref().once("value", function(snapshot) {
+        curPlayer1Choice = snapshot.val().player1ChoiceFB;
+        curPlayer2Choice = snapshot.val().player2ChoiceFB;
+        $("#1-player1-choice").text(curPlayer1Choice);
+        $("#1-player2-choice").text(curPlayer2Choice);
+        $("#2-player2-choice").text(curPlayer2Choice);
+        $("#2-player1-choice").text(curPlayer1Choice);
+    });
+};
+
 // set firebase listener to score round once both players have clicked rock/paper/scissors buttons
 function scoreRoundListener(){
     database.ref().on("value", function(snapshot) {
@@ -205,6 +217,7 @@ function scoreRoundListener(){
         curPlayer2Choice = snapshot.val().player2ChoiceFB;
         console.log(player1BtnClick);
         console.log(player2BtnClick);
+        // updatePlayerChoice is run only when both users have selected their response
         if (player1BtnClick === true && player2BtnClick === true) {
             scoreRound();
             updatePlayerChoice();
@@ -256,16 +269,6 @@ function scoreRound() {
             "player2BtnClickFB": false,
         });
     };
-};
-function updatePlayerChoice() {
-    database.ref().once("value", function(snapshot) {
-        curPlayer1Choice = snapshot.val().player1ChoiceFB;
-        curPlayer2Choice = snapshot.val().player2ChoiceFB;
-        $("#1-player1-choice").text(curPlayer1Choice);
-        $("#1-player2-choice").text(curPlayer2Choice);
-        $("#2-player2-choice").text(curPlayer2Choice);
-        $("#2-player1-choice").text(curPlayer1Choice);
-    });
 };
 
 function updateScoreBoard() {

@@ -16,7 +16,7 @@ I. Using HTML and Bootstrap, created page structure with elements for the follow
 
 II. Used JavaScript and jQuery library with Firebase and local storage to write game logic:
 
-1. Wrote click handlers for player1-chosen and player2-chosen buttons, that when clicked, set boolean variables to "true" both in both Firebase and in local storage, and that show the hidden gameboard for the player they selected
+1. Wrote click handlers for "player1-chosen" and "player2-chosen" buttons, that when clicked, set boolean variables to "true" in both Firebase and in local storage, and that show the hidden gameboard for the player selected
 
 2. Wrote showPlayerButtons function that is called upon page load and that uses a Firebase watcher to notice when the boolean playerChosen variables change value in the database. This function then shows/hides the available player buttons and directions text in the HTML based on the combination of boolean values.
 

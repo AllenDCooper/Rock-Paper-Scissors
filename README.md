@@ -1,6 +1,8 @@
 # Rock-Paper-Scissors
 Two-player rock, paper, scissors game
 
+[https://allendcooper.github.io/Rock-Paper-Scissors/](https://allendcooper.github.io/Rock-Paper-Scissors/)
+
 ## Overview
 I. Using HTML and Bootstrap, created page structure with elements for the following:
 
